@@ -36,12 +36,3 @@ def processAddCourse(req):
 def course(req,courseId):
     print(res)
     return render(req,"course.html",{"courses":res})
-
-def loginUser(req):
-    pass
-
-
-def logoutUser(req):
-    pass
-
-
