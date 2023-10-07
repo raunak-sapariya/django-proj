@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    html, body, div, h1, p, form, label, input, button {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7fafc;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .info-box {
+        padding: 10px;
+        background-color: #edf2f7;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .info-icon {
+        font-size: 24px;
+        margin-right: 10px;
+        color: #4299e1;
+    }
+
+    .info-text {
+        flex: 1;
+    }
+
+    .course-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-item {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 5px;
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .add-button,
+    .remove-button,
+    .submit-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-button {
+        background-color: #4299e1;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .remove-button {
+        background-color: #ff6b6b;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .submit-button {
+        background-color: #4caf50;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .separator {
+        flex: 1;
+        height: 1px;
+        background-color: #cbd5e0;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .loading-bar{
+        display: block;
+        height: 20px;
+        width: 0%;
+        margin-top: 10px;
+        background:blue;
+    }
+
+</style>
+<body>
+    <div class="container">
+        <h1 class="main-title">
+            Learning Journey
+        </h1>
+        <div class="info-box">
+            <div class="info-icon">ℹ️</div>
+            <div class="info-text">
+                Enter a course title or what you want to learn about. Then enter a list of units, which are the specifics you want to learn. Our AI will generate a course for you!
+            </div>
+        </div>
+        <form id="course-form" class="course-form" action="processAddCourse" method="post">
+             {% csrf_token %}
+            <div class="form-item">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="courseName" id="courseName" placeholder="Enter the topic of the course" class="form-input">
+            </div>
+            <div class="form-buttons">
+                <button type="button" id="add-unit" class="add-button">Add Unit</button>
+                <button type="button" id="remove-unit" class="remove-button">Remove Unit</button>
+            </div>
+            <!-- Initial unit input fields -->
+            <div class="form-item">
+                <label for="units[0]" class="form-label">Unit 1</label>
+                <input type="text" id="units[0]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
+            </div>
+            <div class="form-item">
+                <label for="units[1]" class="form-label">Unit 2</label>
+                <input type="text" id="units[1]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
+            </div>
+            <div class="form-item">
+                <label for="units[2]" class="form-label">Unit 3</label>
+                <input type="text" id="units[2]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
+            </div>
+            <!-- End of initial unit input fields -->
+            <button type="submit" id="submit-button" class="submit-button">
+                <span id="submit-text">Let's Go!</span>
+            </button>
+        </form>
+        <div id="loading-bar" class="loading-bar"></div>
+
+    </div>
+    
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("course-form");
+        const submitButton = document.getElementById("submit-button");
+        const loadingBar = document.getElementById("loading-bar");
+        const unitsContainer = document.querySelector(".form-buttons");
+        let unitIndex = 3; // Start with 3 initial units
+    
+        // Function to add new unit input fields below Unit 3
+        document.getElementById("add-unit").addEventListener("click", function () {
+            const unitDiv = document.createElement("div");
+            unitDiv.classList.add("form-item");
+            unitDiv.innerHTML = `
+                <label for="units[${unitIndex}]"  class="form-label">Unit ${unitIndex + 1}</label>
+                <input type="text" id="units[${unitIndex}]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
+            `;
+    
+            if (unitsContainer) {
+                unitsContainer.appendChild(unitDiv);
+                unitIndex++;
+            }
+        });
+    
+        // Function to remove the last unit input field
+        document.getElementById("remove-unit").addEventListener("click", function () {
+            if (unitIndex > 3) {
+                unitIndex--;
+                const lastUnit = unitsContainer.querySelector(".form-item:last-child");
+                if (lastUnit) {
+                    unitsContainer.removeChild(lastUnit);
+                }
+            }
+        });
+        submitButton.addEventListener("click", function () {
+           
+            let width=10
+            setInterval(function () {
+                if (width>=100){
+                loadingBar.style.width=width+"%";
+                width+=10;
+                }
+                
+            }, 3000); 
+        });
+    
+      
+    
+    });
+    </script>
+    </body>
+    {% endblock %}
+    
+
+    <!-- 
+        [{'title': 'html', 'chapters': [{'youtube_search_query': 'html introduction', 'chapter_title': 'Introduction to HTML'}, {'youtube_search_query': 'html tags and elements', 'chapter_title': 'HTML Tags and Elements'}, {'youtube_search_query': 'html forms and input', 'chapter_title': 'HTML Forms and Input'}]}, {'title': 'css', 'chapters': [{'youtube_search_query': 'css selectors', 'chapter_title': 'CSS Selectors'}, {'youtube_search_query': 'css layout', 'chapter_title': 'CSS Layout'}, {'youtube_search_query': 'css animations', 'chapter_title': 'CSS Animations'}]}, {'title': 'javascript', 'chapters': [{'youtube_search_query': 'javascript variables and data types', 'chapter_title': 'JavaScript Variables and Data Types'}, {'youtube_search_query': 'javascript functions', 'chapter_title': 'JavaScript Functions'}, {'youtube_search_query': 'javascript DOM manipulation', 'chapter_title': 'JavaScript DOM Manipulation'}]}]
+     -->
