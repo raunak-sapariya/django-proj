@@ -5,6 +5,14 @@ class Course(models.Model):
     id = models.CharField(primary_key=True, max_length=255, unique=True)
     name = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
+
+
+class Unit(models.Model):
+    id = models.CharField(primary_key=True, max_length=255, unique=True)
+    courseId = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    course = models.ForeignKey('Course', on_delete=models.CASCADE,related_name='units')
+    
     
 
 
@@ -16,14 +24,10 @@ class Chapter(models.Model):
     videoId = models.CharField(max_length=255, blank=True, null=True)
     summary = models.CharField(max_length=3000, blank=True, null=True)
     unit = models.ForeignKey('Unit', on_delete=models.CASCADE,related_name='chapters')
-    
 
-class Unit(models.Model):
-    id = models.CharField(primary_key=True, max_length=255, unique=True)
-    courseId = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    course = models.ForeignKey('Course', on_delete=models.CASCADE,related_name='units')
-    
+
+
+
 
 class Question(models.Model):
     id = models.CharField(primary_key=True, max_length=255, unique=True)

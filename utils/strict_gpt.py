@@ -1,12 +1,12 @@
-import os
+""" import os
 import openai
 import json
 import re
 import random
 
 
+openai.api_key= "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"
 
-openai.api_key= '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'
 def strict_output(system_prompt, user_prompt, output_format, default_category = "", output_value_only = False,
 model="gpt-3.5-turbo",temperature = 0, num_tries = 3, verbose = False):
 
@@ -78,5 +78,47 @@ Any output key containing < and > indicates you must generate the key name to re
       
          
     return res
+
+
+"""
+
+import openai
+import re
+import json
+import concurrent.futures
+
+openai.api_key="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"
+
+
+def strict_output(system_prompt, user_prompt, output_format, model="gpt-3.5-turbo", temperature=0):
+    
+  
+    system_prompt += f"Generate strict list of JSON data in the following format: {output_format} without any unneccesssary space."
+    
+    response = openai.ChatCompletion.create(
+        temperature=temperature,
+        model=model,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+    )
+    
+    generated_content = response['choices'][0]['message']['content']
+    data_string = generated_content.replace("'", '"')
+
+    return generated_content
+
+
+
+
+
+def process_prompt(prompt):
+    system_prompt="You are an AI capable of curating course content, coming up with relevant consise chapter titles related to units given by user, and finding relevant youtube videos title for each chapter,and four hard quiz related to each chapter with four options and its correct answer "
+    user_prompt=prompt
+    output_format =  {"title":"consise and innovative title of unit","chapter":"an array of at least 5 chapters, each chapter should have a chapter unit and youtube query",
+    }
+    result = strict_output(system_prompt, user_prompt, output_format)
+    return result
 
 

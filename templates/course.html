@@ -1,79 +1,87 @@
-{% extends "base.html" %}
-{% block content %}
-    <style>
-        /* Styles for the sidebar */
-        .sidebar {
-            width: 250px; /* Adjust the width as needed */
-            background-color: #333; /* Sidebar background color */
-            color: #fff; /* Text color */
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow-y: auto; /* Enable scrolling if content overflows */
-        }
+{% extends "base.html" %} {% block content %}
+<style>
+  /* Styles for the sidebar */
+  .sidebar {
+    width: 250px; /* Adjust the width as needed */
+    background-color: #333; /* Sidebar background color */
+    color: #fff; /* Text color */
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto; /* Enable scrolling if content overflows */
+  }
 
-        /* Styles for the course list */
-        .course-list {
-            list-style: none;
-            padding: 0;
-        }
+  /* Styles for the course list */
+  .course-list {
+    list-style: none;
+    padding: 0;
+  }
 
-        /* Styles for individual courses */
-        .course {
-            margin-bottom: 20px;
-        }
+  /* Styles for individual courses */
+  .course {
+    margin-bottom: 20px;
+  }
 
-        /* Styles for course titles */
-        .course h2 {
-            font-size: 1.5rem; /* Course title font size */
-            margin-bottom: 10px;
-        }
+  /* Styles for course titles */
+  .course h2 {
+    font-size: 1.5rem; /* Course title font size */
+    margin-bottom: 10px;
+  }
 
-        /* Styles for the chapter list */
-        .chapter-list {
-            list-style: none;
-            padding: 0;
-        }
+  /* Styles for the chapter list */
+  .chapter-list {
+    list-style: none;
+    padding: 0;
+  }
 
-        /* Styles for individual chapters */
-        .chapter {
-            margin-top: 8px;
-        }
+  /* Styles for individual chapters */
+  .chapter {
+    margin-top: 8px;
+  }
 
-        /* Styles for chapter links */
-        .chapter a {
-            text-decoration: none;
-            color: #007bff; /* Chapter link color */
-            font-weight: bold;
-            transition: color 0.3s ease; /* Smooth color transition on hover */
-        }
+  /* Styles for chapter links */
+  .chapter a {
+    text-decoration: none;
+    color: #007bff; /* Chapter link color */
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+  }
 
-        /* Hover effect for chapter links */
-        .chapter a:hover {
-            color: #0056b3; /* Hovered chapter link color */
-        }
-    </style>
-    <div class="sidebar">
-        <h1 class="text-4xl font-bold">Course List</h1>
-        <ul class="course-list">
-            {% for course in courses %}
-            <li class="course">
-                <h2>{{ course.title.upper }}</h2>
-                <ul class="chapter-list">
-                    {% for chapter in course.chapters %}
-                    <li class="chapter">
-                        <a href="#">{{ chapter.chapter_title }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div style="margin-left: 250px; padding: 20px;"> <!-- Adjust the margin-left to match the sidebar width -->
-        <!-- Your main content goes here -->
-    </div>
+  /* Hover effect for chapter links */
+  .chapter a:hover {
+    color: #0056b3; /* Hovered chapter link color */
+  }
+</style>
+<div class="sidebar">
+  <h1 class="text-4xl font-bold">Course List</h1>
+  <ul class="course-list">
+    {{ courses }}
+    {% for course in courses %}
+    <li class="course">
+      <h2>{{ course.title.upper }}</h2>
+      <ul class="chapter-list">
+        {% for chapter in course.chapters %}
+        <li class="chapter" name="{{ chapter.query }}">
+          <a href="#">{{ chapter.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+<div style="margin-left: 280px; padding: 20px">
+  <iframe
+    width="1100"
+    height="600"
+    src="https://www.youtube.com/embed/tgbNymZ7vqY"
+  >
+  </iframe>
+</div>
+<script>
+  console.log(JSON.stringify("{{ courses | safe }}", null, 2));
+</script>
 
 {% endblock %}
