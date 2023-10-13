@@ -1,222 +1,450 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <style>
-    html, body, div, h1, p, form, label, input, button {
-        margin: 0;
-        padding: 0;
-        border: 0;
-    }
+  html,
+  body,
+  div,
+  h1,
+  p,
+  form,
+  label,
+  input,
+  button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f7fafc;
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f7fafc;
-    }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
 
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  .main-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
 
-    .main-title {
-        font-size: 2rem;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+  .info-box {
+    padding: 15px;
+    background-color: #edf2f7;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-    .info-box {
-        padding: 10px;
-        background-color: #edf2f7;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+  .info-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #4299e1;
+  }
 
-    .info-icon {
-        font-size: 24px;
-        margin-right: 10px;
-        color: #4299e1;
-    }
+  .info-text {
+    flex: 1;
+    color: #333;
+  }
 
-    .info-text {
-        flex: 1;
-    }
+  .course-form {
+    display: flex;
+    flex-direction: column;
+  }
 
-    .course-form {
-        display: flex;
-        flex-direction: column;
-    }
+  .form-item {
+    margin-bottom: 20px;
+  }
 
-    .form-item {
-        margin-bottom: 20px;
-    }
+  .form-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
 
-    .form-label {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 5px;
+  }
 
-    .form-input {
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #cbd5e0;
-        border-radius: 5px;
-    }
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    .form-buttons {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+  .add-button,
+  .remove-button,
+  .submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
-    .add-button,
-    .remove-button,
-    .submit-button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+  .add-button {
+    background-color: #4299e1;
+    color: #fff;
+  }
 
-    .add-button {
-        background-color: #4299e1;
-        color: #ffffff;
-        font-weight: bold;
-    }
+  .remove-button {
+    background-color: #ff6b6b;
+    color: #fff;
+  }
 
-    .remove-button {
-        background-color: #ff6b6b;
-        color: #ffffff;
-        font-weight: bold;
-    }
+  .submit-button {
+    background-color: #4caf50;
+    color: #fff;
+  }
 
-    .submit-button {
-        background-color: #4caf50;
-        color: #ffffff;
-        font-weight: bold;
-    }
+  .separator {
+    flex: 1;
+    height: 1px;
+    background-color: #cbd5e0;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
-    .separator {
-        flex: 1;
-        height: 1px;
-        background-color: #cbd5e0;
-        margin-left: 10px;
-        margin-right: 10px;
-    }
+  .loading-bar {
+    display: block;
+    height: 20px;
+    width: 0%;
+    margin-top: 10px;
+    background: #4299e1;
+  }
 
-    .loading-bar{
-        display: block;
-        height: 20px;
-        width: 0%;
-        margin-top: 10px;
-        background:blue;
-    }
+  .suggestion {
+    list-style: none;
+    background: #b6b6b6;
+    color: #333;
+    border-radius: 5px;
+  }
 
+  .suggestion li {
+    cursor: pointer;
+  }
+
+  .suggestion li:hover {
+    background-color: #ff6b6b;
+  }
 </style>
 <body>
-    <div class="container">
-        <h1 class="main-title">
-            Learning Journey
-        </h1>
-        <div class="info-box">
-            <div class="info-icon">ℹ️</div>
-            <div class="info-text">
-                Enter a course title or what you want to learn about. Then enter a list of units, which are the specifics you want to learn. Our AI will generate a course for you!
-            </div>
-        </div>
-        <form id="course-form" class="course-form" action="processAddCourse" method="post">
-             {% csrf_token %}
-            <div class="form-item">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" name="courseName" id="courseName" placeholder="Enter the topic of the course" class="form-input">
-            </div>
-            <div class="form-buttons">
-                <button type="button" id="add-unit" class="add-button">Add Unit</button>
-                <button type="button" id="remove-unit" class="remove-button">Remove Unit</button>
-            </div>
-            <!-- Initial unit input fields -->
-            <div class="form-item">
-                <label for="units[0]" class="form-label">Unit 1</label>
-                <input type="text" id="units[0]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
-            </div>
-            <div class="form-item">
-                <label for="units[1]" class="form-label">Unit 2</label>
-                <input type="text" id="units[1]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
-            </div>
-            <div class="form-item">
-                <label for="units[2]" class="form-label">Unit 3</label>
-                <input type="text" id="units[2]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
-            </div>
-            <!-- End of initial unit input fields -->
-            <button type="submit" id="submit-button" class="submit-button">
-                <span id="submit-text">Let's Go!</span>
-            </button>
-        </form>
-        <div id="loading-bar" class="loading-bar"></div>
-
+  <div class="container">
+    <h1 class="main-title">Learning Journey</h1>
+    <div class="info-box">
+      <div class="info-icon">ℹ️</div>
+      <div class="info-text">
+        Enter a course title or what you want to learn about. Then enter a list
+        of units, which are the specifics you want to learn. Our AI will
+        generate a course for you!
+      </div>
     </div>
-    
-    <script>
-       document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("course-form");
-        const submitButton = document.getElementById("submit-button");
-        const loadingBar = document.getElementById("loading-bar");
-        const unitsContainer = document.querySelector(".form-buttons");
-        let unitIndex = 3; // Start with 3 initial units
-    
-        // Function to add new unit input fields below Unit 3
-        document.getElementById("add-unit").addEventListener("click", function () {
-            const unitDiv = document.createElement("div");
-            unitDiv.classList.add("form-item");
-            unitDiv.innerHTML = `
-                <label for="units[${unitIndex}]"  class="form-label">Unit ${unitIndex + 1}</label>
-                <input type="text" id="units[${unitIndex}]" name="unitNames" placeholder="Enter subtopic of the course" class="form-input">
-            `;
-    
-            if (unitsContainer) {
-                unitsContainer.appendChild(unitDiv);
-                unitIndex++;
-            }
-        });
-    
-        // Function to remove the last unit input field
-        document.getElementById("remove-unit").addEventListener("click", function () {
-            if (unitIndex > 3) {
-                unitIndex--;
-                const lastUnit = unitsContainer.querySelector(".form-item:last-child");
-                if (lastUnit) {
-                    unitsContainer.removeChild(lastUnit);
-                }
-            }
-        });
-        submitButton.addEventListener("click", function () {
-           
-            let width=10
-            setInterval(function () {
-                if (width>=100){
-                loadingBar.style.width=width+"%";
-                width+=10;
-                }
-                
-            }, 3000); 
-        });
-    
-      
-    
-    });
-    </script>
-    </body>
-    {% endblock %}
-    
+    <form id="course-form" class="course-form">
+      {% csrf_token %}
+      <div class="form-item">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          name="courseName"
+          id="courseName"
+          autocomplete="off"
+          placeholder="Enter the topic of the course"
+          class="form-input"
+        />
+      </div>
+      <div class="suggestion"></div>
 
-    <!-- 
-        [{'title': 'html', 'chapters': [{'youtube_search_query': 'html introduction', 'chapter_title': 'Introduction to HTML'}, {'youtube_search_query': 'html tags and elements', 'chapter_title': 'HTML Tags and Elements'}, {'youtube_search_query': 'html forms and input', 'chapter_title': 'HTML Forms and Input'}]}, {'title': 'css', 'chapters': [{'youtube_search_query': 'css selectors', 'chapter_title': 'CSS Selectors'}, {'youtube_search_query': 'css layout', 'chapter_title': 'CSS Layout'}, {'youtube_search_query': 'css animations', 'chapter_title': 'CSS Animations'}]}, {'title': 'javascript', 'chapters': [{'youtube_search_query': 'javascript variables and data types', 'chapter_title': 'JavaScript Variables and Data Types'}, {'youtube_search_query': 'javascript functions', 'chapter_title': 'JavaScript Functions'}, {'youtube_search_query': 'javascript DOM manipulation', 'chapter_title': 'JavaScript DOM Manipulation'}]}]
-     -->
+      <div class="form-item">
+        <label for="units[0]" class="form-label">Unit 1</label>
+        <input
+          type="text"
+          id="units[0]"
+          name="unitNames"
+          placeholder="Enter subtopic of the course"
+          class="form-input"
+        />
+      </div>
+      <div class="form-item">
+        <label for="units[1]" class="form-label">Unit 2</label>
+        <input
+          type="text"
+          id="units[1]"
+          name="unitNames"
+          placeholder="Enter subtopic of the course"
+          class="form-input"
+        />
+      </div>
+      <div class="form-item">
+        <label for="units[2]" class="form-label">Unit 3</label>
+        <input
+          type="text"
+          id="units[2]"
+          name="unitNames"
+          placeholder="Enter subtopic of the course"
+          class="form-input"
+        />
+      </div>
+      <button type="submit" id="submit-button" class="submit-button">
+        <span id="submit-text">Let's Go!</span>
+      </button>
+    </form>
+    <div id="loading-bar" class="loading-bar"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("course-form");
+      const submitButton = document.getElementById("submit-button");
+      const loadingBar = document.getElementById("loading-bar");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+          courseName: e.srcElement[1].value,
+          units: [
+            e.srcElement[2].value,
+            e.srcElement[3].value,
+            e.srcElement[4].value,
+          ],
+        };
+
+        const res = await fetch("processAddCourse/", {
+          method: "post",
+          headers: {
+            "X-CSRFToken": e.srcElement[0].value,
+          },
+          body: JSON.stringify(data),
+        });
+        location.href =e.srcElement[1].value;
+      });
+
+      /*       const Courses = [
+  "Introduction to Biology",
+  "Chemistry Fundamentals",
+  "Physics for Beginners",
+  "Web Development",
+  "Introduction to Data Science",
+  "Cybersecurity Essentials",
+  "Entrepreneurship and Startups",
+  "Digital Marketing Mastery",
+  "Financial Planning and Investment",
+  "Artificial Intelligence Fundamentals",
+  "Machine Learning for Beginners",
+  "JavaScript Programming",
+  "Graphic Design Basics",
+  "Photography Fundamentals",
+  "Introduction to Psychology",
+  "History of Civilization",
+  "Business Ethics and Leadership",
+  "Modern World Literature",
+  "Spanish Language Basics",
+  "French Cooking Techniques",
+  "Yoga and Meditation",
+  "Introduction to Astronomy",
+  "Environmental Science",
+  "Sociology: Understanding Society",
+  "Music Theory and Composition",
+  "Introduction to Film Studies",
+  "Introduction to Philosophy",
+  "Political Science and Government",
+  "Geology: Earth's History",
+  "Introduction to Economics",
+  "Statistics and Data Analysis",
+  "Public Speaking and Communication",
+  "Introduction to Robotics",
+  "Art History: Renaissance to Modern Art",
+  "Creative Writing Workshop",
+  "Marketing Strategies for Small Businesses",
+  "Digital Illustration and Design",
+  "Photography Editing and Post-Processing",
+  "Introduction to Nutrition and Health",
+  "World Geography and Cultures",
+  "Introduction to Cryptocurrency",
+  "Ethical Hacking and Penetration Testing",
+  "Introduction to 3D Printing",
+  "Human Anatomy and Physiology",
+  "Introduction to Sustainable Agriculture",
+  "Introduction to Python Programming",
+  "Front-End Web Development with React",
+  "Data Visualization with D3.js",
+  "Mobile App Development with React Native",
+  "Machine Learning with TensorFlow",
+  "Introduction to Artificial Neural Networks",
+  "Introduction to Game Development",
+  "Digital Marketing Analytics",
+  "Java Programming",
+  "Digital Photography Techniques",
+  "Introduction to Business Management",
+  "Financial Analysis and Investment Strategies",
+  "Spanish Language Intermediate",
+  "French Cuisine and Cooking Methods",
+  "Yoga and Mindfulness",
+  "Cosmology and Astrophysics",
+  "Conservation Biology",
+  "Cultural Anthropology",
+  "Classical Music Appreciation",
+  "Modern Art Movements",
+  "International Relations and Diplomacy",
+  "Climate Change and Environmental Policy",
+  "Statistics and Regression Analysis",
+  "Leadership and Team Management",
+  "Mobile App Design and User Experience",
+  "Natural Language Processing with Python",
+  "Machine Learning Algorithms",
+  "Virtual Reality Development",
+  "Social Media Marketing Strategies",
+  "Data Analysis with Python",
+  "Business Law and Ethics",
+  "Financial Accounting Principles",
+  "Spanish Language Proficiency",
+  "French Wine and Pairing",
+  "Meditation Techniques",
+  "Quantum Mechanics and Quantum Computing",
+  "Marine Biology and Conservation",
+  "Archaeology: Uncovering the Past",
+  "Great Philosophical Thinkers",
+  "Global Politics and Conflict Resolution",
+  "Microeconomics",
+  "Calculus",
+  "Cross-Cultural Communication",
+  "Digital Art and Illustration",
+  "Photoshop Techniques",
+  "Health and Nutrition Science",
+  "World Religions and Ethics",
+  "Blockchain Technology and Applications",
+  "Digital Marketing Campaign Management",
+  "Java Programming",
+  "Photography Composition",
+  "Human Resources Management",
+  "Financial Risk Analysis",
+  "Spanish Literature and Poetry",
+  "French Art and Impressionism",
+  "Tai Chi and Qi Gong",
+  "Astronomy and Space Exploration",
+  "Tropical Ecology and Biodiversity",
+  "Psychological Disorders and Treatment",
+  "Postmodern Literature and Theory",
+  "Diplomatic History and Negotiation",
+  "Game Design and Development",
+  "Artificial Intelligence",
+  "Blockchain and Cryptocurrency Fundamentals",
+  "JavaScript Frameworks",
+  "Data Science for Business",
+  "Machine Learning for Natural Language Processing",
+  "Web Application Security",
+  "Digital Marketing Strategy and Planning",
+  "Financial Analysis and Modeling",
+  "Data Visualization Techniques",
+  "Business Strategy",
+  "Mobile App Development",
+  "Cybersecurity Practices",
+  "Cloud Computing",
+  "Quantum Computing",
+  "Bioinformatics",
+  "Nanotechnology",
+  "Materials Science",
+  "Robotics and Automation",
+  "Space Exploration",
+  "Renewable Energy Systems",
+  "Environmental Policy and Conservation",
+  "Geopolitics and Global Security",
+  "International Business Management",
+  "Supply Chain Management",
+  "Human Resource Management",
+  "Marketing Analytics",
+  "Social Media Marketing",
+  "Branding and Advertising",
+  "Public Speaking and Persuasion",
+  "Creative Writing Workshop",
+  "Film Production and Direction",
+  "Music Composition and Production",
+  "Art History and Criticism",
+  "Philosophy and Ethics",
+  "Political Science and Governance",
+  "Economics and Economic Policy",
+  "Statistical Analysis Methods",
+  "Machine Learning and Deep Learning",
+  "Data Engineering and Big Data",
+  "Augmented and Virtual Reality",
+  "User Experience (UX) Design",
+  "Game Development and Design",
+  "Mobile Game Development",
+  "3D Printing and Additive Manufacturing",
+  "Biotechnology and Genetic Engineering",
+  "Medical Research and Health Sciences",
+  "Psychology and Behavioral Science",
+  "Sociology and Social Issues",
+  "Cultural Studies and Anthropology",
+  "History and Historical Analysis",
+  "Linguistics and Language Studies",
+  "Education and Pedagogy",
+  "Legal Studies and Jurisprudence",
+  "Conflict Resolution and Mediation",
+  "Project Management",
+  "Leadership and Organizational Behavior",
+  "Personal Development and Well-Being",
+  "Nutrition and Dietetics",
+  "Sports Science and Performance",
+  "Coaching and Training Techniques"]
+
+
+suggestion= document.querySelector(".suggestion")
+courseName=document.querySelector("#courseName")
+courseName.addEventListener("input",function k(){
+
+if (courseName.value!==""){
+    const filteredCourses=Courses.filter(e=>e.toLowerCase().includes(courseName.value.toLowerCase())).slice(0,5)
+    if (filteredCourses.length!==0){
+
+    
+    suggestion.innerHTML="<ul>"
+
+    for (let i=0;i<filteredCourses.length;i++) {
+        suggestion.innerHTML+=`<li>${filteredCourses[i]}</li>`
+    
+        }
+    suggestion.innerHTML+="</ul>"
+    }else{
+    suggestion.innerHTML=""
+        
+    }
+
+
+
+    document.querySelectorAll(".suggestion li").forEach(e=>addEventListener("click",(e)=>{
+        courseName.value=e.target.innerText
+        courseName.focus()
+   
+    }))
+
+
+}
+else{
+    suggestion.innerHTML=""
+
+}
+})
+
+     */
+    });
+  </script>
+</body>
+{% endblock %}
