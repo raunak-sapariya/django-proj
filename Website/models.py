@@ -1,14 +1,6 @@
 from django.db import models
 
 
-class User(models.Model):
-    id = models.CharField(primary_key=True, max_length=255, unique=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    email = models.EmailField(unique=True, blank=True, null=True)
-    emailVerified = models.DateTimeField(blank=True, null=True)
-    image = models.CharField(max_length=255, blank=True, null=True)
-
-
 class Course(models.Model):
     id = models.CharField(primary_key=True, max_length=255, unique=True)
     name = models.CharField(max_length=255)
