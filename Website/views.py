@@ -95,6 +95,7 @@ def addCourseToDB(req):
     
     course=Course(id=str(uuid4()),name=courseName,image=courseImg)
     course.save()
+    
     for unit in units:
         unit=Unit(id=str(uuid4()),name=unit["title"],courseId=course.id,course=course)
         unit.save()

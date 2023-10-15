@@ -87,7 +87,7 @@ import re
 import json
 import concurrent.futures
 
-openai.api_key="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"
+openai.api_key="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"
 
 
 def strict_output(system_prompt, user_prompt, output_format, model="gpt-3.5-turbo", temperature=0):
@@ -106,8 +106,9 @@ def strict_output(system_prompt, user_prompt, output_format, model="gpt-3.5-turb
     
     generated_content = response['choices'][0]['message']['content']
     data_string = generated_content.replace("'", '"')
+    print(data_string)
 
-    return generated_content
+    return data_string
 
 
 
